@@ -26,6 +26,7 @@ public sealed class McpServer
     private readonly ToolRegistry _tools;
     private readonly ILogger<McpServer>? _logger;
     private string _agentId = "default-agent";
+    private bool _initializeResultSent;
     private bool _initialized;
 
     /// <summary>Server name reported in initialize.</summary>
@@ -44,6 +45,9 @@ public sealed class McpServer
 
     /// <summary>Tool registry (test seam: call handlers directly without JSON framing).</summary>
     public ToolRegistry Tools => _tools;
+
+    /// <summary>True once the client completed the MCP handshake (initialize + notifications/initialized).</summary>
+    public bool IsInitialized => _initialized;
 
     /// <summary>Runs the stdio loop: newline-delimited JSON-RPC on stdin/stdout (stderr for logs).</summary>
     public async Task RunStdioAsync(CancellationToken ct)
@@ -124,11 +128,20 @@ public sealed class McpServer
     /// </summary>
     public async Task<JsonObject?> ProcessAsync(string method, JsonObject? args, JsonNode? id, bool isNotification = false)
     {
+        // MCP lifecycle: only initialize/ping are legal before the handshake completes.
+        if (!_initializeResultSent && method is not ("initialize" or "ping"))
+        {
+            return isNotification
+                ? null
+                : Respond(id, null, RpcError.InvalidRequest, "Received a request before 'initialize'.");
+        }
+
         try
         {
             switch (method)
             {
                 case "initialize":
+                    _initializeResultSent = true;
                     return Respond(id, Initialize(args));
 
                 case "notifications/initialized":

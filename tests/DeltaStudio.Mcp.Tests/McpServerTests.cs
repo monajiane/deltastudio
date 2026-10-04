@@ -68,6 +68,30 @@ public class ProtocolTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task RequestBeforeInitialize_IsRejected()
+    {
+        var server = new McpServer(_h.Engine);
+        Assert.False(server.IsInitialized);
+
+        JsonObject resp = (await server.ProcessAsync("tools/list", null, JsonValue.Create(1)))!;
+        Assert.NotNull(resp["error"]);
+        Assert.Equal(-32600, resp["error"]!["code"]!.GetValue<int>());
+
+        // ping stays legal before the handshake, and initialize completes it.
+        Assert.NotNull((await server.ProcessAsync("ping", null, JsonValue.Create(2)))!["result"]);
+        Assert.NotNull((await server.ProcessAsync("initialize", new JsonObject
+        {
+            ["protocolVersion"] = "2024-11-05",
+            ["capabilities"] = new JsonObject(),
+            ["clientInfo"] = new JsonObject { ["name"] = "guard-test", ["version"] = "1.0" },
+        }, JsonValue.Create(3)))!["result"]);
+        Assert.NotNull((await server.ProcessAsync("tools/list", null, JsonValue.Create(4)))!["result"]);
+
+        Assert.Null(await server.ProcessAsync("notifications/initialized", null, null, isNotification: true));
+        Assert.True(server.IsInitialized);
+    }
+
+    [Fact]
     public async Task ToolsList_ExposesFullRequiredSurface()
     {
         JsonObject resp = await _h.RequestAsync("tools/list", null);
