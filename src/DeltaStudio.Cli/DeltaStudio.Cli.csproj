@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>deltastudio</AssemblyName>
+    <Description>Headless CLI: runs the MCP server over stdio, validates/compiles projects from a shell. No GUI required.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Mcp/DeltaStudio.Mcp.csproj" />
+    <ProjectReference Include="../DeltaStudio.Infrastructure/DeltaStudio.Infrastructure.csproj" />
+    <ProjectReference Include="../DeltaStudio.Delta/DeltaStudio.Delta.csproj" />
+  </ItemGroup>
+</Project>

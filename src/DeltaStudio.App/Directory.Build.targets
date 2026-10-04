@@ -1,0 +1,6 @@
+<Project>
+  <!-- Applied after the project body: the non-Windows shim flips the app to a plain classlib. -->
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+</Project>

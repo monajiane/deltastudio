@@ -1,0 +1,14 @@
+<Project>
+  <!-- Neutralize WinUI/WindowsAppSDK targets on non-Windows: they are imported after this file
+       is registered, but our redefinitions below come last in import order. -->
+  <Target Name="MarkupCompilePass1" />
+  <Target Name="MarkupCompilePass2" />
+  <Target Name="XamlPreCompile" />
+  <Target Name="PrepareXbfCopy" />
+  <Target Name="CopyXamlGeneratedFiles" />
+  <PropertyGroup>
+    <DisableMarkUpCompileFirstPassXaml>true</DisableMarkUpCompileFirstPassXaml>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <AppxPackage>false</AppxPackage>
+  </PropertyGroup>
+</Project>

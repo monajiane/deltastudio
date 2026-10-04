@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>DeltaStudio.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <UseWinUI>true</UseWinUI>
+    <WindowsPackageType>None</WindowsPackageType>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <PublishProfile>Properties/PublishProfiles/win-x64.pubxml</PublishProfile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Infrastructure/DeltaStudio.Infrastructure.csproj" />
+    <ProjectReference Include="../DeltaStudio.Delta/DeltaStudio.Delta.csproj" />
+    <ProjectReference Include="../DeltaStudio.Compiler/DeltaStudio.Compiler.csproj" />
+    <ProjectReference Include="../DeltaStudio.Protocols/DeltaStudio.Protocols.csproj" />
+    <ProjectReference Include="../DeltaStudio.Core/DeltaStudio.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" PrivateAssets="none" />
+  </ItemGroup>
+</Project>

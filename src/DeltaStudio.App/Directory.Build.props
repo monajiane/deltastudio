@@ -1,0 +1,18 @@
+<Project>
+  <!--
+    WinUI 3 markup compilation requires the Windows-only XamlCompiler.exe. On non-Windows hosts
+    (Linux CI/devboxes) this project becomes an empty, buildable shell so the solution builds
+    everywhere; full compilation (XAML + C#) runs on Windows. No engineering logic lives here
+    anyway — the app is a thin client over DeltaStudio.Core.
+  -->
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <UseWinUI>false</UseWinUI>
+    <OutputType>Library</OutputType>
+    <WindowsPackageType>None</WindowsPackageType>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <CustomAfterMicrosoftCommonTargets>$(MSBuildThisFileDirectory)DeltaStudio.App.NonWindows.targets</CustomAfterMicrosoftCommonTargets>
+  </PropertyGroup>
+</Project>

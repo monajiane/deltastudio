@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Shared engine facade, SQLite project registry, safety tokens, persistence. Used by BOTH WinUI and MCP.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Core/DeltaStudio.Core.csproj" />
+    <ProjectReference Include="../DeltaStudio.Compiler/DeltaStudio.Compiler.csproj" />
+    <ProjectReference Include="../DeltaStudio.Protocols/DeltaStudio.Protocols.csproj" />
+    <ProjectReference Include="../DeltaStudio.Delta/DeltaStudio.Delta.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+</Project>

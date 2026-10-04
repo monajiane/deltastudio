@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "rungs": [
+    {
+      "number": 1,
+      "comment": "Motor start/stop with holding contact. Stop is NC for fail-safe.",
+      "logic": {
+        "type": "series",
+        "elements": [
+          { "type": "contact", "device": "X1", "polarity": "nc", "label": "Stop" },
+          {
+            "type": "parallel",
+            "branches": [
+              { "type": "series", "elements": [ { "type": "contact", "device": "X0", "polarity": "no", "label": "Start" } ] },
+              { "type": "series", "elements": [ { "type": "contact", "device": "Y0", "polarity": "no", "label": "Motor holding" } ] }
+            ]
+          },
+          { "type": "coil", "device": "Y0", "action": "out", "label": "Motor Contactor" }
+        ]
+      }
+    },
+    {
+      "number": 2,
+      "comment": "Fault latch: overload (X2) sets M10; M10 NC breaks the motor circuit (shown here for the review example).",
+      "logic": {
+        "type": "series",
+        "elements": [
+          { "type": "contact", "device": "X2", "polarity": "no", "label": "Overload" },
+          { "type": "coil", "device": "M10", "action": "set", "label": "Fault" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "symbols": [
+    { "name": "StartButton", "address": "X0", "comment": "NO start pushbutton" },
+    { "name": "StopButton", "address": "X1", "comment": "NC stop pushbutton" },
+    { "name": "Overload", "address": "X2", "comment": "NC overload aux contact" },
+    { "name": "Motor", "address": "Y0", "comment": "Motor contactor" },
+    { "name": "Fault", "address": "M10", "comment": "Fault latch" }
+  ]
+}

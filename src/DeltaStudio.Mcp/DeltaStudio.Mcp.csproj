@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>MCP server (stdio JSON-RPC). Thin protocol layer over the shared engine.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Infrastructure/DeltaStudio.Infrastructure.csproj" />
+    <ProjectReference Include="../DeltaStudio.Delta/DeltaStudio.Delta.csproj" />
+  </ItemGroup>
+</Project>

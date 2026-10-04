@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DeltaStudio.App.Views.OutputView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <TabView x:Name="Tabs" IsAddTabButtonVisible="False">
+        <TabView.TabItems>
+            <TabViewItem Header="Output" IsClosable="False">
+                <ListView ItemsSource="{Binding LogLines}" FontFamily="Consolas,Menlo,monospace" FontSize="12" MaxHeight="180" />
+            </TabViewItem>
+            <TabViewItem Header="Diagnostics" IsClosable="False">
+                <TextBox Text="{Binding DiagnosticsText, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas,Menlo,monospace"
+                         FontSize="12" MaxHeight="180" TextWrapping="Wrap" AcceptsReturn="True" />
+            </TabViewItem>
+            <TabViewItem Header="Listing" IsClosable="False">
+                <TextBox Text="{Binding ListingText, Mode=OneWay}" IsReadOnly="True" FontFamily="Consolas,Menlo,monospace"
+                         FontSize="12" MaxHeight="180" TextWrapping="NoWrap" AcceptsReturn="True" />
+            </TabViewItem>
+        </TabView.TabItems>
+    </TabView>
+</UserControl>

@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Ladder/IL parsing and generation, Delta backend assembly stage.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Core/DeltaStudio.Core.csproj" />
+  </ItemGroup>
+</Project>

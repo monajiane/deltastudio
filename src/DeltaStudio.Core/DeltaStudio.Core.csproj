@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Target-independent PLC IR: devices, ladder model, project model, validation.</Description>
+  </PropertyGroup>
+</Project>

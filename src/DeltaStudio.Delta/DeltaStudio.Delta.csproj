@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Delta DVP backend: model catalog, instruction database, Modbus device mapping, programming protocol abstraction.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DeltaStudio.Core/DeltaStudio.Core.csproj" />
+    <ProjectReference Include="../DeltaStudio.Compiler/DeltaStudio.Compiler.csproj" />
+    <ProjectReference Include="../DeltaStudio.Protocols/DeltaStudio.Protocols.csproj" />
+  </ItemGroup>
+</Project>

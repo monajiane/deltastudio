@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="DeltaStudio.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:views="using:DeltaStudio.App.Views">
+    <Grid x:Name="Shell"
+          Loaded="OnShellLoaded"
+          RowDefinitions="Auto,Auto,*,180,Auto">
+
+        <!-- menu bar -->
+        <MenuBar Grid.Row="0" x:Name="Menu">
+            <MenuBarItem Title="File">
+                <MenuFlyoutItem Text="New project" Click="OnNewProject" />
+                <MenuFlyoutItem Text="Open folder…" Click="OnOpenFolder" />
+                <MenuFlyoutItem Text="Save" Click="OnSave" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Exit" Click="OnExit" />
+            </MenuBarItem>
+            <MenuBarItem Title="Edit">
+                <MenuFlyoutItem Text="Undo" Click="OnUndo" KeyboardAcceleratorTextOverride="Ctrl+Z" />
+                <MenuFlyoutItem Text="Redo" Click="OnRedo" KeyboardAcceleratorTextOverride="Ctrl+Y" />
+            </MenuBarItem>
+            <MenuBarItem Title="View">
+                <MenuFlyoutItem Text="Toggle theme (dark/light)" Click="OnToggleTheme" />
+                <MenuFlyoutItem Text="Language (English/فارسی)" Click="OnToggleLanguage" />
+            </MenuBarItem>
+            <MenuBarItem Title="PLC">
+                <MenuFlyoutItem Text="Connect — MOCK (emulator)" Click="OnConnectMock" />
+                <MenuFlyoutItem Text="Connect — Serial…" Click="OnConnectSerial" />
+                <MenuFlyoutItem Text="Disconnect" Click="OnDisconnect" />
+            </MenuBarItem>
+            <MenuBarItem Title="Tools">
+                <MenuFlyoutItem Text="Validate" Click="OnValidate" />
+                <MenuFlyoutItem Text="Compile (listing)" Click="OnCompile" />
+            </MenuBarItem>
+            <MenuBarItem Title="AI">
+                <MenuFlyoutItem Text="MCP server for agents…" Click="OnAiInfo" />
+            </MenuBarItem>
+        </MenuBar>
+
+        <!-- toolbar -->
+        <CommandBar Grid.Row="1" DefaultLabelPosition="Right">
+            <AppBarButton Label="New" Icon="Add" Click="OnNewProject" />
+            <AppBarButton Label="Open" Icon="OpenFile" Click="OnOpenFolder" />
+            <AppBarButton Label="Save" Icon="Save" Click="OnSave" />
+            <AppBarSeparator />
+            <AppBarButton Label="Validate" Icon="Repair" Click="OnValidate" />
+            <AppBarButton Label="Compile" Icon="Build" Click="OnCompile" />
+            <AppBarSeparator />
+            <AppBarButton Label="Connect" Icon="Connect" Click="OnConnectMock" />
+            <AppBarButton Label="Disconnect" Icon="Disconnect" Click="OnDisconnect" />
+        </CommandBar>
+
+        <!-- main working area: tree | ladder | monitor -->
+        <Grid Grid.Row="2" ColumnDefinitions="250,*,280">
+            <Border Grid.Column="0" BorderThickness="0,0,1,0" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}">
+                <views:ProjectExplorerView x:Name="Explorer" />
+            </Border>
+            <views:LadderEditorView Grid.Column="1" x:Name="Editor" />
+            <Border Grid.Column="2" BorderThickness="1,0,0,0" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}">
+                <views:MonitorView x:Name="Monitor" />
+            </Border>
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Height="6" HorizontalAlignment="Stretch"
+                      Background="{ThemeResource DividerStrokeColorDefaultBrush}" VerticalAlignment="Top" />
+        <views:OutputView Grid.Row="3" Margin="0,6,0,0" />
+
+        <!-- status bar -->
+        <Border Grid.Row="4" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="12,4">
+            <Grid ColumnDefinitions="*,Auto,Auto">
+                <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding ConnectionText}" VerticalAlignment="Center" Margin="16,0"
+                           Foreground="{ThemeResource SystemAccentColor}" />
+                <TextBlock Grid.Column="2" Text="{Binding ProjectTitle}" VerticalAlignment="Center" Opacity="0.8" />
+            </Grid>
+        </Border>
+
+        <!-- project creation card (name + model; shown until a project exists) -->
+        <ContentDialog x:Name="NewProjectDialog" Title="New DeltaStudio project"
+                       PrimaryButtonText="Create" CloseButtonText="Cancel" DefaultButton="Primary">
+            <StackPanel Spacing="8" MinWidth="320">
+                <TextBox Header="Name" Text="{Binding NewProjectName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <ComboBox Header="CPU model" ItemsSource="{Binding ModelIds}" SelectedItem="{Binding NewProjectModel, Mode=TwoWay}"
+                          HorizontalAlignment="Stretch" />
+                <TextBlock Text="Capabilities, device ranges and program capacity are enforced from the selected model's documented spec (see docs/devices.md)."
+                           TextWrapping="Wrap" FontSize="11" Opacity="0.7" />
+            </StackPanel>
+        </ContentDialog>
+
+        <ContentDialog x:Name="AiDialog" Title="AI agents via MCP" CloseButtonText="Close">
+            <TextBlock Text="{Binding AiHint}" TextWrapping="Wrap" FontFamily="Consolas,Menlo,monospace" MaxWidth="480" />
+        </ContentDialog>
+    </Grid>
+</Window>
