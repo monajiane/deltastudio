@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+
 jobs:
   build-test:
     strategy:
@@ -16,7 +19,20 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
+      # -m:1 pins MSBuild to a single node. The full XAML compile plus the test hosts
+      # start many threads at once; on memory-tight runners/hosts that surfaced as
+      # System.OutOfMemoryException inside ThreadPool.RequestWorkerThread, which kills
+      # the build with a confusing "child node exited prematurely" instead of a build error.
       - name: Build (App is a Linux-safe shim; full XAML compile on windows)
-        run: dotnet build DeltaStudio.sln -c Release
+        run: dotnet build DeltaStudio.sln -c Release -m:1
       - name: Test
-        run: dotnet test DeltaStudio.sln -c Release --nologo
+        run: dotnet test DeltaStudio.sln -c Release --nologo -m:1
+      # The WinUI app previously only ever built as the empty non-Windows shim; assert
+      # the real binary exists so that regression cannot go unnoticed again.
+      - name: Verify WinUI app was produced (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem src/DeltaStudio.App/bin/Release -Recurse -Filter DeltaStudio.App.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $exe) { throw "DeltaStudio.App.exe was not produced - the WinUI app failed to compile." }
+          Write-Output "built: $($exe.FullName) ($([math]::Round($exe.Length/1KB,1)) KB)"
