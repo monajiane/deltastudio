@@ -30,8 +30,15 @@ every edit goes through `Workspace.Mutate` → validator gates it. Undo/redo are
 See [feature-status.md](feature-status.md) "WinUI 3 app" table. Key admits: drag-and-drop element
 placement is NOT_IMPLEMENTED (toolbar editing is PARTIAL replacement); parallel-branch insertion
 is only in the AI/MCP path today; live monitor refreshes the watch list but does not yet recolor
-individual chips; the output pane has no drag-to-resize splitter (WinUI has no `GridSplitter`), and
-full interactive smoke is still pending a Windows run.
+individual chips; the output pane has no drag-to-resize splitter (WinUI has no `GridSplitter`).
+The app launches and renders all four surfaces on a Windows smoke run, but automated GUI coverage
+is still NOT_IMPLEMENTED (needs a Windows runner).
+
+## Startup diagnostics
+
+WinUI startup failures otherwise vanish into a WER bucket as an opaque `0xC000027B` stowed
+exception with no .NET Runtime event, so `App.xaml.cs` writes first-chance startup exceptions to
+`%LOCALAPPDATA%\DeltaStudio\crash.log` (stages: `OnLaunched`, `WinUI`, `AppDomain`).
 
 ## Building on non-Windows hosts
 

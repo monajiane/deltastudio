@@ -21,6 +21,16 @@ public partial class App : Application
     /// <summary>App entry.</summary>
     public App()
     {
+        System.AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+            CrashLog.Write("AppDomain", e.ExceptionObject as Exception);
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+            CrashLog.Write("TaskScheduler", e.Exception);
+        UnhandledException += (_, e) =>
+        {
+            CrashLog.Write("WinUI", e.Exception);
+            e.Handled = true;
+        };
+
         var uiLog = new UiLogService();
         string dataDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DeltaStudio");
@@ -48,9 +58,40 @@ public partial class App : Application
     /// <inheritdoc/>
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-        await _host.StartAsync();
-        Services = _host.Services;
-        _window = Services.GetRequiredService<MainWindow>();
-        _window.Activate();
+        try
+        {
+            await _host.StartAsync();
+            Services = _host.Services;
+            _window = Services.GetRequiredService<MainWindow>();
+            _window.Activate();
+        }
+        catch (Exception ex)
+        {
+            CrashLog.Write("OnLaunched", ex);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Best-effort startup crash log: WinUI startup failures otherwise vanish into a WER
+    /// bucket as an opaque 0xC000027B stowed exception with no .NET Runtime event.
+    /// </summary>
+    private static class CrashLog
+    {
+        internal static void Write(string stage, Exception? ex)
+        {
+            try
+            {
+                string dir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DeltaStudio");
+                Directory.CreateDirectory(dir);
+                File.AppendAllText(Path.Combine(dir, "crash.log"),
+                    $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] stage={stage}\n{ex}\n\n");
+            }
+            catch
+            {
+                // never let the logger itself take the process down
+            }
+        }
     }
 }

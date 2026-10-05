@@ -46,10 +46,10 @@
             <AppBarButton Label="Save" Icon="Save" Click="OnSave" />
             <AppBarSeparator />
             <AppBarButton Label="Validate" Icon="Repair" Click="OnValidate" />
-            <AppBarButton Label="Compile" Icon="Build" Click="OnCompile" />
+            <AppBarButton Label="Compile" Click="OnCompile" />
             <AppBarSeparator />
-            <AppBarButton Label="Connect" Icon="Connect" Click="OnConnectMock" />
-            <AppBarButton Label="Disconnect" Icon="Disconnect" Click="OnDisconnect" />
+            <AppBarButton Label="Connect" Click="OnConnectMock" />
+            <AppBarButton Label="Disconnect" Click="OnDisconnect" />
         </CommandBar>
 
         <!-- main working area: tree | ladder | monitor -->

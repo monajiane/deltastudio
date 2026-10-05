@@ -70,7 +70,7 @@ Markers: **IMPLEMENTED** (works, tested) · **PARTIAL** (works with named gaps) 
 
 | feature | status | notes |
 |---|---|---|
-| Shell: menus, toolbar, project tree, output/diagnostics/listing panes, status bar | IMPLEMENTED (code) | compiles on Windows; **not yet executed interactively** (dev box is Linux) |
+| Shell: menus, toolbar, project tree, output/diagnostics/listing panes, status bar | IMPLEMENTED | compiles on Windows and passed a live launch smoke (window renders all four surfaces); automated GUI coverage NOT_IMPLEMENTED |
 | Graphical ladder rendering from IR (contacts, coils, parallels, blocks, IL preview) | IMPLEMENTED (code) | real visual tree from semantic nodes — not a canvas of fixed rectangles |
 | Editing: add/remove/move rungs, add contacts (NO/NC/UP/DOWN) and coils (OUT/SET/RST) | PARTIAL | parallel-branch insertion lives in the MCP/AI path (`ladder_add_contact parallel=true`) |
 | Undo/redo (snapshot based) | IMPLEMENTED | |
