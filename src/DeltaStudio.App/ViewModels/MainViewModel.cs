@@ -272,7 +272,12 @@ public sealed partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void AddContact(object? polarityObj)
     {
-        if (!RequireProject() || SelectedRung is null || !DeviceAddress.TryParse(DeviceDialogText.Trim(), out DeviceAddress addr, out string? err))
+        if (!RequireProject() || SelectedRung is null)
+        {
+            return;
+        }
+
+        if (!DeviceAddress.TryParse(DeviceDialogText.Trim(), out DeviceAddress addr, out string? err))
         {
             StatusText = err ?? "bad address";
             return;
@@ -296,7 +301,12 @@ public sealed partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void AddCoil(object? actionObj)
     {
-        if (!RequireProject() || SelectedRung is null || !DeviceAddress.TryParse(DeviceDialogText.Trim(), out DeviceAddress addr, out string? err))
+        if (!RequireProject() || SelectedRung is null)
+        {
+            return;
+        }
+
+        if (!DeviceAddress.TryParse(DeviceDialogText.Trim(), out DeviceAddress addr, out string? err))
         {
             StatusText = err ?? "bad address";
             return;
@@ -411,8 +421,7 @@ public sealed partial class MainViewModel : ObservableObject
         var devices = MonitorDevicesText
             .Split(new[] { ',', ';', ' ', '\n' }, StringSplitOptions.RemoveEmptyEntries)
             .Select(t => DeviceAddress.TryParse(t.Trim(), out DeviceAddress d, out _) ? d : (DeviceAddress?)null)
-            .Where(d => d is not null)
-            .Select(d => d!)
+            .OfType<DeviceAddress>()
             .ToList();
         if (devices.Count == 0)
         {

@@ -11,6 +11,11 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <PublishProfile>Properties/PublishProfiles/win-x64.pubxml</PublishProfile>
+    <!-- The XAML compiler resolves the project's own types through the win-* intermediate assembly;
+         without Platforms/RuntimeIdentifier it gets no LocalAssembly and every local view type fails
+         with WMC0001. -->
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../DeltaStudio.Infrastructure/DeltaStudio.Infrastructure.csproj" />
@@ -22,7 +27,15 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" PrivateAssets="none" />
+    <!--
+      WindowsAppSDK 1.x shipped a .NET Framework 4.7.2 XamlCompiler.exe that exits 1 with no
+      diagnostics on a dotnet-SDK-only host, and its PRI generation needs MSBuild task DLLs that
+      only exist in a Visual Studio installation. The 2.x toolchain ships its own compiler +
+      build tools as NuGet packages, so the app builds with the .NET SDK alone.
+    -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="0.7.1" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" PrivateAssets="none" />
   </ItemGroup>
 </Project>

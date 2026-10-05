@@ -30,8 +30,8 @@ every edit goes through `Workspace.Mutate` → validator gates it. Undo/redo are
 See [feature-status.md](feature-status.md) "WinUI 3 app" table. Key admits: drag-and-drop element
 placement is NOT_IMPLEMENTED (toolbar editing is PARTIAL replacement); parallel-branch insertion
 is only in the AI/MCP path today; live monitor refreshes the watch list but does not yet recolor
-individual chips; **the app was compiled-by-shim on Linux** — full XAML compile + interactive smoke
-still need a Windows run (`dotnet build DeltaStudio.sln` on Windows, then F5 `DeltaStudio.App`).
+individual chips; the output pane has no drag-to-resize splitter (WinUI has no `GridSplitter`), and
+full interactive smoke is still pending a Windows run.
 
 ## Building on non-Windows hosts
 
@@ -41,9 +41,12 @@ On Windows the same project builds the full app (`WindowsPackageType=None`, unpa
 
 ## Prerequisites for the Windows build
 
-The full app build needs the **.NET 8 SDK** plus the **Windows 10 SDK** (the `net8.0-windows10.0.19041.0`
-target framework and the XAML markup compiler `XamlCompiler.exe` both resolve Windows SDK reference
-assemblies under `C:\Program Files (x86)\Windows Kits\10`). Without the Windows SDK the App project
-fails at `MarkupCompilePass1` with `XamlCompiler.exe exited with code 1`; every other project and all
-tests still build and pass, so the SDK is only needed when you actually want the GUI binary.
+The full app build needs the **.NET 8 SDK** and the **Windows 10 SDK** (the
+`net8.0-windows10.0.19041.0` target framework resolves Windows SDK reference assemblies under
+`C:\Program Files (x86)\Windows Kits\10`).
+
+It deliberately does **not** require Visual Studio. WindowsAppSDK 1.x shipped a .NET Framework
+4.7.2 `XamlCompiler.exe` that fails silently (exit 1, no diagnostics) on a dotnet-SDK-only host and
+needed MSBuild task DLLs that only exist in a VS installation; the 2.x toolchain ships its own
+compiler plus `Microsoft.Windows.SDK.BuildTools*` as NuGet packages instead. The project pins 2.5.1.
 

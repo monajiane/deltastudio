@@ -2,6 +2,7 @@ using DeltaStudio.App.Services;
 using DeltaStudio.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.Storage.Pickers;
 
@@ -22,7 +23,8 @@ public sealed partial class MainWindow : Window
         _theme = App.Services.GetRequiredService<ThemeService>();
         InitializeComponent();
         Title = _loc["AppTitle"];
-        DataContext = _vm;
+        // Window has no DataContext in WinUI — the binding root is the root element (Shell).
+        Shell.DataContext = _vm;
         _loc.LanguageChanged += (_, _) => Title = _loc["AppTitle"];
         _theme.ThemeChanged += (_, _) => ApplyTheme();
         ApplyTheme();

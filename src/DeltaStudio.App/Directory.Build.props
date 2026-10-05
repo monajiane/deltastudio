@@ -1,6 +1,14 @@
 <Project>
   <!--
-    WinUI 3 markup compilation requires the Windows-only XamlCompiler.exe. On non-Windows hosts
+    Import the repo-root props FIRST (LangVersion/Nullable/ImplicitUsings/NoWarn are shared by every
+    project). MSBuild stops at the nearest Directory.Build.props, so without this import the app
+    silently lost Nullable + ImplicitUsings and only ever compiled as the empty Linux shim.
+    The non-Windows overrides below are evaluated afterwards and therefore win.
+  -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!--
+    WinUI 3 markup compilation requires the Windows-only XamlCompiler. On non-Windows hosts
     (Linux CI/devboxes) this project becomes an empty, buildable shell so the solution builds
     everywhere; full compilation (XAML + C#) runs on Windows. No engineering logic lives here
     anyway — the app is a thin client over DeltaStudio.Core.

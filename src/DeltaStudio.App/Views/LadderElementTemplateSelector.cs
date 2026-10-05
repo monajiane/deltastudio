@@ -26,10 +26,10 @@ public sealed class LadderElementTemplateSelector : DataTemplateSelector
 
     private DataTemplate? Pick(object item) => item switch
     {
-        App.ViewModels.ContactViewModel => ContactTemplate,
-        App.ViewModels.CoilViewModel => CoilTemplate,
-        App.ViewModels.BlockViewModel => BlockTemplate,
-        App.ViewModels.ParallelViewModel => ParallelTemplate,
+        DeltaStudio.App.ViewModels.ContactViewModel => ContactTemplate,
+        DeltaStudio.App.ViewModels.CoilViewModel => CoilTemplate,
+        DeltaStudio.App.ViewModels.BlockViewModel => BlockTemplate,
+        DeltaStudio.App.ViewModels.ParallelViewModel => ParallelTemplate,
         _ => null,
     };
 }

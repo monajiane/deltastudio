@@ -31,9 +31,9 @@ dotnet $DLL compile ./Motor                # symbolic Delta listing
 dotnet $DLL mcp-stdio                      # ← point any MCP client at this (docs/mcp.md)
 ```
 
-Building the WinUI 3 app on Windows additionally needs the Windows 10 SDK (XAML markup
-compilation runs `XamlCompiler.exe`); the other projects and all tests build without it —
-see docs/ui.md.
+Building the WinUI 3 app on Windows additionally needs the Windows 10 SDK (XAML markup compilation
+resolves Windows SDK reference assemblies); Visual Studio is not required. The other projects and all
+tests build without it — see docs/ui.md.
 
 Try the shipped example: `examples/motor-start-stop` (X1-NC stop, (X0∥Y0) holding → Y0, X2→SET M10).
 

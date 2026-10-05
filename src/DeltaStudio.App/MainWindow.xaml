@@ -6,7 +6,7 @@
     xmlns:views="using:DeltaStudio.App.Views">
     <Grid x:Name="Shell"
           Loaded="OnShellLoaded"
-          RowDefinitions="Auto,Auto,*,180,Auto">
+          RowDefinitions="Auto,Auto,*,*,Auto">
 
         <!-- menu bar -->
         <MenuBar Grid.Row="0" x:Name="Menu">
@@ -63,9 +63,9 @@
             </Border>
         </Grid>
 
-        <GridSplitter Grid.Row="3" Height="6" HorizontalAlignment="Stretch"
-                      Background="{ThemeResource DividerStrokeColorDefaultBrush}" VerticalAlignment="Top" />
-        <views:OutputView Grid.Row="3" Margin="0,6,0,0" />
+        <!-- output pane: a star row so it shares height with the editor (WinUI has no GridSplitter;
+             the drag-resize affordance is a documented NOT_IMPLEMENTED item in docs/feature-status.md) -->
+        <views:OutputView Grid.Row="3" MinHeight="120" />
 
         <!-- status bar -->
         <Border Grid.Row="4" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="12,4">

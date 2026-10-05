@@ -73,7 +73,8 @@ public sealed partial class ProjectExplorerView : UserControl
 
     private void OnItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
     {
-        if (args.InvokedNode is { Content: ExplorerNode { Tag: RungViewModel rung } } && _vm is not null)
+        // WinUI exposes the invoked TreeViewItem as InvokedItem (not WPF's InvokedNode).
+        if (args.InvokedItem is TreeViewItem { Content: ExplorerNode { Tag: RungViewModel rung } } && _vm is not null)
         {
             _vm.SelectedRung = rung;
         }
